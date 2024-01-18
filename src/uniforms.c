@@ -24,7 +24,7 @@ void uniform_update(const Uniform *uniform, const void *value) {
             glUniform1fv(uniform->location, 1, (const GLfloat*)value);
             break;
         case DOUBLE:
-            glUniform1dv(uniform->location, 1, (const GLdouble*)value);
+            // glUniform1dv(uniform->location, 1, (const GLdouble*)value);
             break;
         case BOOL:
             glUniform1iv(uniform->location, 1, (const GLint*)value); // GLSL bools are set as GLint
