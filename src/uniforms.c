@@ -1,16 +1,17 @@
 #include "../include/uniforms.h"
 #include <stdio.h>
 
-Uniform uniform_new(const ShaderProgram *shader, const char *name) {
+Uniform uniform_new(const ShaderProgram *shader, const char *name, UniformType type) {
     Uniform uniform;
     uniform.program = shader->id;
     uniform.name = name;
     uniform.location = glGetUniformLocation(shader->id, name);
+    uniform.type = type;
     return uniform;
 }
 
 
-void update_uniform(const Uniform *uniform, const void *value) {
+void uniform_update(const Uniform *uniform, const void *value) {
     glUseProgram(uniform->program);
     switch (uniform->type) {
         case INT:

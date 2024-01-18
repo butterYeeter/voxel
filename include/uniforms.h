@@ -27,7 +27,7 @@ typedef struct Uniform {
 
 
 
-Uniform uniform_new(const ShaderProgram *shader, const char *name);
-void update_uniform(const Uniform *uniform, const void *value);
+Uniform uniform_new(const ShaderProgram *shader, const char *name, UniformType type);
+void uniform_update(const Uniform *uniform, const void *value);
 
 #endif
