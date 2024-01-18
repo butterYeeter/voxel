@@ -9,9 +9,10 @@
 
 #include "../include/shaders.h"
 #include "../include/uniforms.h"
+#include "../include/camera.h"
 
-int window_width = 640;
-int window_height = 640;
+int window_width = 800;
+int window_height = 800;
 
 void window_resize_callback(GLFWwindow *window, int width, int height) {
 	glViewport(0,0,width,height);
@@ -32,10 +33,7 @@ int main() {
 		return -1;
 	}
 	glfwSetWindowSizeCallback(window, window_resize_callback);
-	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glEnable(GL_DEPTH_TEST);
-	glDepthFunc(GL_LESS);
 
 
 	float vertices[] = {
@@ -78,8 +76,6 @@ int main() {
 		0.5f,-0.5f, 0.5f,	1.0f, 0.0f, 0.0f
 	};
 
-
-
 	ShaderProgram program = shader_program_new("assets/vert.glsl", "assets/frag.glsl");
 	glUseProgram(program.id);
 
@@ -95,30 +91,22 @@ int main() {
 	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6*sizeof(float), (void*)(3*sizeof(float)));
 	glEnableVertexAttribArray(1);
 
-	// mat4 rot;
-	// glm_mat4_identity(rot);
-	// glm_rotate(rot, glm_rad(90.0f), (vec3){0.0f, 0.0f, 1.0f});
-	mat4 rot;
-	glm_mat4_identity(rot);
-	glm_rotate(rot, 0.5f, (vec3){0.0f, 1.0f, 1.0f});
 	Uniform rota = uniform_new(&program, "rot", MAT4);
-	uniform_update(&rota, &rot);
-
 
 	float angle = 180.0f;
 	float last_time = glfwGetTime();
+
+	Camera camera = camera_new();
+
 	while(!glfwWindowShouldClose(window)) {
 		glClearColor(0.0f, 0.0f, 0.1f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		// glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+		camera_update(&camera, window);
+		uniform_update(&rota, camera.view);
+
 		float time = glfwGetTime();
 		glDrawArrays(GL_TRIANGLES, 0, 12*3);
-		glm_rotate(rot, glm_rad(angle*(time - last_time)), (vec3){0.0f, 1.0f, 0.0f});
-		glm_rotate(rot, glm_rad(120.0f*(time - last_time)), (vec3){0.0f, 0.0f, 1.0f});
-		uniform_update(&rota, &rot);
-		angle += 0.005f;
-		if(angle > 360.0f) angle = 0.0f;
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();
