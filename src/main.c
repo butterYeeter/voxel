@@ -73,7 +73,7 @@ int main() {
 		-0.5f, 0.5f, 0.5f,	0.0f, 1.0f, 0.0f,
 		0.5f, 0.5f, 0.5f,	1.0f, 1.0f, 0.0f,
 		-0.5f, 0.5f, 0.5f,	0.0f, 1.0f, 0.0f,
-		0.5f,-0.5f, 0.5f,	1.0f, 0.0f, 0.0f
+		0.5f,-0.5f, 0.5f,	1.0f, 0.0f, 0.0f,
 	};
 
 	ShaderProgram program = shader_program_new("assets/vert.glsl", "assets/frag.glsl");
@@ -95,6 +95,8 @@ int main() {
 
 	float angle = 180.0f;
 	float last_time = glfwGetTime();
+
+	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
 
 	Camera camera = camera_new();
 

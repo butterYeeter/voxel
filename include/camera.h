@@ -17,7 +17,7 @@ typedef struct Camera {
     Vec3 *orientation;
     Vec3 *up;
     float speed;
-    bool first_click;
+    bool toggled;
 } Camera;
 
 Vec3 *vec3_new(float x, float y, float z);
