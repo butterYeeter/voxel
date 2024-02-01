@@ -17,20 +17,36 @@ void vec3_add(Vec3 *vec, vec3 add) {
 }
 
 Camera camera_new() {
+
     return (Camera){
         .view = GLM_MAT4_IDENTITY_INIT,
         .perspective = GLM_MAT4_IDENTITY_INIT,
-        .position = vec3_new(0.0, 10.0, 0.0),
+        .position = vec3_new(0.0, 0.0, 0.0),
         .orientation = vec3_new(0.0, 0.0, -1.0),
         .up = vec3_new(0.0, 1.0, 0.0),
         .speed = 0.1f,
-        .first_click = false,
+        .toggled = true,
     };
 }
 
 void camera_inputs(Camera *camera, GLFWwindow *window) {
+    if (glfwGetKey(window, GLFW_KEY_C) == GLFW_PRESS) {
+        if(camera->toggled) {
+		    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+        } else {
+            glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
+        }
+
+		camera->toggled = !camera->toggled;
+        return;
+	}
+    
+    if (!camera->toggled) {
+        return;
+    }
+
 	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
-        vec3 orientation = {camera->orientation->x, camera->orientation->y, camera->orientation->z};
+        vec3 orientation = {camera->orientation->x, 0.0, camera->orientation->z};
         glm_vec3_scale(orientation, camera->speed, orientation);
         vec3_add(camera->position, orientation);
     }
@@ -42,11 +58,12 @@ void camera_inputs(Camera *camera, GLFWwindow *window) {
         glm_vec3_normalize(orientation);
         glm_vec3_negate(orientation);
 
+        glm_vec3_scale(orientation, camera->speed, orientation);
         vec3_add(camera->position, orientation);
 	}
 	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
-        vec3 orientation = {camera->orientation->x, camera->orientation->y, camera->orientation->z};
-        glm_vec3_negate(orientation);
+        vec3 orientation = {camera->orientation->x, 0.0, camera->orientation->z};
+        glm_vec3_scale(orientation, -camera->speed, orientation);
         vec3_add(camera->position, orientation);
 	}
 	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
@@ -56,33 +73,35 @@ void camera_inputs(Camera *camera, GLFWwindow *window) {
         glm_vec3_cross(orientation, up, orientation);
         glm_vec3_normalize(orientation);
 
+        glm_vec3_scale(orientation, camera->speed, orientation);
         vec3_add(camera->position, orientation);
 	}
 	if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS) {
         vec3 up = {camera->up->x, camera->up->y, camera->up->z};
-		glm_vec3_scale(up, camera->speed, up);
+		glm_vec3_scale(up, camera->speed * 2, up);
         vec3_add(camera->position, up);
 	}
-	if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS) {
+	if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) {
         vec3 up = {camera->up->x, camera->up->y, camera->up->z};
-		glm_vec3_scale(up, camera->speed, up);
-        glm_vec3_negate(up);
+		glm_vec3_scale(up, camera->speed * -2, up);
         vec3_add(camera->position, up);
 	}
+	// if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS) {
+    //     vec3 up = {camera->up->x, camera->up->y, camera->up->z};
+	// 	glm_vec3_scale(up, camera->speed, up);
+    //     glm_vec3_negate(up);
+    //     vec3_add(camera->position, up);
+	// }
 
 	// Handles mouse inputs
-	if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS)
 	{
-		glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
 
-		if (camera->first_click) {
-			glfwSetCursorPos(window, (800 / 2), (800 / 2));
-			camera->first_click = false;
-		}
+			// glfwSetCursorPos(window, (800 / 2), (800 / 2));
+		// }
 
-		double mouseX;
-		double mouseY;
-		glfwGetCursorPos(window, &mouseX, &mouseY);
+        double mouseX;
+        double mouseY;
+        glfwGetCursorPos(window, &mouseX, &mouseY);
 
 		float rotX = 10.0 * (float)(mouseY - (800 / 2)) / 800;
 		float rotY = 10.0 * (float)(mouseX - (800 / 2)) / 800;
@@ -111,12 +130,9 @@ void camera_inputs(Camera *camera, GLFWwindow *window) {
         camera->orientation->y = orientation[1];
         camera->orientation->z = orientation[2];
 
+        // if (camera->first_click) {
 		glfwSetCursorPos(window, (800 / 2), (800 / 2));
-	}
-	else if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_RELEASE)
-	{
-		glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
-		camera->first_click = true;
+        // }
 	}
 }
 
