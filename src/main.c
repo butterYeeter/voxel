@@ -10,6 +10,7 @@
 #include "../include/shaders.h"
 #include "../include/uniforms.h"
 #include "../include/camera.h"
+#include "../include/block.h"
 
 int window_width = 800;
 int window_height = 800;
@@ -37,44 +38,45 @@ int main() {
 
 
 	float vertices[] = {
-		// vertices				// rgb colors
-		-0.5f,-0.5f,-0.5f,	1.0f, 0.0f, 0.0f,
-		-0.5f,-0.5f, 0.5f,	0.0f, 1.0f, 0.0f,
-		-0.5f, 0.5f, 0.5f, 	0.0f, 0.0f, 1.0f,
-		0.5f, 0.5f,-0.5f,	1.0f, 1.0f, 0.0f,
-		-0.5f,-0.5f,-0.5f,	1.0f, 0.0f, 0.0f,
-		-0.5f, 0.5f,-0.5f, 	0.0f, 1.0f, 0.0f,
-		0.5f,-0.5f, 0.5f,	0.0f, 0.0f, 1.0f,
-		-0.5f,-0.5f,-0.5f,	1.0f, 0.0f, 0.0f,
-		0.5f,-0.5f,-0.5f,	0.0f, 1.0f, 0.0f,
-		0.5f, 0.5f,-0.5f,	0.0f, 0.0f, 1.0f,
-		0.5f,-0.5f,-0.5f,	1.0f, 0.0f, 0.0f,
-		-0.5f,-0.5f,-0.5f,	1.0f, 0.0f, 0.0f,
-		-0.5f,-0.5f,-0.5f,	1.0f, 0.0f, 0.0f,
-		-0.5f, 0.5f, 0.5f,	0.0f, 1.0f, 0.0f,
-		-0.5f, 0.5f,-0.5f,	0.0f, 0.0f, 1.0f,
-		0.5f,-0.5f, 0.5f,	1.0f, 0.0f, 0.0f,
-		-0.5f,-0.5f, 0.5f,	0.0f, 1.0f, 0.0f,
-		-0.5f,-0.5f,-0.5f,	0.0f, 0.0f, 1.0f,
-		-0.5f, 0.5f, 0.5f,	1.0f, 0.0f, 0.0f,
-		-0.5f,-0.5f, 0.5f,	0.0f, 1.0f, 0.0f,
-		0.5f,-0.5f, 0.5f,	0.0f, 0.0f, 1.0f,
-		0.5f, 0.5f, 0.5f,	1.0f, 1.0f, 0.0f,
-		0.5f,-0.5f,-0.5f,	1.0f, 0.0f, 0.0f,
-		0.5f, 0.5f,-0.5f,	0.0f, 1.0f, 0.0f,
-		0.5f,-0.5f,-0.5f,	0.0f, 0.0f, 1.0f,
-		0.5f, 0.5f, 0.5f,	1.0f, 1.0f, 0.0f,
-		0.5f,-0.5f, 0.5f,	1.0f, 0.0f, 0.0f,
-		0.5f, 0.5f, 0.5f,	0.0f, 1.0f, 0.0f,
-		0.5f, 0.5f,-0.5f,	1.0f, 1.0f, 0.0f,
-		-0.5f, 0.5f,-0.5f,	0.0f, 1.0f, 0.0f,
-		0.5f, 0.5f, 0.5f,	1.0f, 1.0f, 0.0f,
-		-0.5f, 0.5f,-0.5f,	0.0f, 1.0f, 0.0f,
-		-0.5f, 0.5f, 0.5f,	0.0f, 1.0f, 0.0f,
-		0.5f, 0.5f, 0.5f,	1.0f, 1.0f, 0.0f,
-		-0.5f, 0.5f, 0.5f,	0.0f, 1.0f, 0.0f,
-		0.5f,-0.5f, 0.5f,	1.0f, 0.0f, 0.0f,
+		-0.5f, -0.5f, -0.5f,	1.0f, 0.0f, 0.0f,
+		-0.5f, -0.5f,  0.5f,	0.0f, 1.0f, 0.0f,
+		-0.5f,  0.5f,  0.5f, 	0.0f, 0.0f, 1.0f,
+		0.5f,   0.5f, -0.5f,	1.0f, 1.0f, 0.0f,
+		-0.5f,-0.5f,  -0.5f,	1.0f, 0.0f, 0.0f,
+		-0.5f, 0.5f,  -0.5f, 	0.0f, 1.0f, 0.0f,
+		0.5f,-0.5f,    0.5f,	0.0f, 0.0f, 1.0f,
+		-0.5f,-0.5f,  -0.5f,	1.0f, 0.0f, 0.0f,
+		0.5f,-0.5f,   -0.5f,	0.0f, 1.0f, 0.0f,
+		0.5f, 0.5f,   -0.5f,	0.0f, 0.0f, 1.0f,
+		0.5f,-0.5f,   -0.5f,	1.0f, 0.0f, 0.0f,
+		-0.5f,-0.5f,  -0.5f,	1.0f, 0.0f, 0.0f,
+		-0.5f,-0.5f,  -0.5f,	1.0f, 0.0f, 0.0f,
+		-0.5f, 0.5f,   0.5f,	0.0f, 1.0f, 0.0f,
+		-0.5f, 0.5f,  -0.5f,	0.0f, 0.0f, 1.0f,
+		0.5f,-0.5f,    0.5f,	1.0f, 0.0f, 0.0f,
+		-0.5f,-0.5f,   0.5f,	0.0f, 1.0f, 0.0f,
+		-0.5f,-0.5f,  -0.5f,	0.0f, 0.0f, 1.0f,
+		-0.5f, 0.5f,   0.5f,	1.0f, 0.0f, 0.0f,
+		-0.5f,-0.5f,   0.5f,	0.0f, 1.0f, 0.0f,
+		0.5f,-0.5f,    0.5f,	0.0f, 0.0f, 1.0f,
+		0.5f, 0.5f,    0.5f,	1.0f, 1.0f, 0.0f,
+		0.5f,-0.5f,   -0.5f,	1.0f, 0.0f, 0.0f,
+		0.5f, 0.5f,   -0.5f,	0.0f, 1.0f, 0.0f,
+		0.5f,-0.5f,   -0.5f,	0.0f, 0.0f, 1.0f,
+		0.5f, 0.5f,    0.5f,	1.0f, 1.0f, 0.0f,
+		0.5f,-0.5f,    0.5f,	1.0f, 0.0f, 0.0f,
+		0.5f, 0.5f,    0.5f,	0.0f, 1.0f, 0.0f,
+		0.5f, 0.5f,   -0.5f,	1.0f, 1.0f, 0.0f,
+		-0.5f, 0.5f,  -0.5f,	0.0f, 1.0f, 0.0f,
+		0.5f, 0.5f,    0.5f,	1.0f, 1.0f, 0.0f,
+		-0.5f, 0.5f,  -0.5f,	0.0f, 1.0f, 0.0f,
+		-0.5f, 0.5f,   0.5f,	0.0f, 1.0f, 0.0f,
+		0.5f, 0.5f,    0.5f,	1.0f, 1.0f, 0.0f,
+		-0.5f, 0.5f,   0.5f,	0.0f, 1.0f, 0.0f,
+		0.5f,-0.5f,    0.5f,	1.0f, 0.0f, 0.0f,
 	};
+
+	Block block = block_new(0.0, 0.0, 0.0);
 
 	ShaderProgram program = shader_program_new("assets/vert.glsl", "assets/frag.glsl");
 	glUseProgram(program.id);
@@ -84,7 +86,7 @@ int main() {
 	glBindVertexArray(vao);
 	glGenBuffers(1, &vbo);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), block.vertices, GL_STATIC_DRAW);
 
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6*sizeof(float), (void*)0);
 	glEnableVertexAttribArray(0);
