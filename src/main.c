@@ -101,6 +101,10 @@ int main() {
 	Camera camera = camera_new();
 
 	while(!glfwWindowShouldClose(window)) {
+		if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
+			exit(1);
+		}
+
 		glClearColor(0.0f, 0.0f, 0.1f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -114,7 +118,6 @@ int main() {
 		glfwPollEvents();
 		last_time = time;
 	}
-	
 
 	glfwTerminate();
 	printf("\033[H\033[2J");
