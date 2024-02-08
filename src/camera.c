@@ -103,8 +103,8 @@ void camera_inputs(Camera *camera, GLFWwindow *window) {
         double mouseY;
         glfwGetCursorPos(window, &mouseX, &mouseY);
 
-		float rotX = 10.0 * (float)(mouseY - (800 / 2)) / 800;
-		float rotY = 10.0 * (float)(mouseX - (800 / 2)) / 800;
+		float rotX = 20.0 * (float)(mouseY - (800 / 2)) / 800;
+		float rotY = 20.0 * (float)(mouseX - (800 / 2)) / 800;
 
         vec3 temp_orientation;
 
