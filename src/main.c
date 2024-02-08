@@ -36,7 +36,7 @@ int main() {
 	glfwSetWindowSizeCallback(window, window_resize_callback);
 	glEnable(GL_DEPTH_TEST);
 
-	Block block = block_new(0.0, 0.0, 0.0);
+	Block block = block_new(0.0, 0.0, -10.0);
 
 	ShaderProgram program = shader_program_new("assets/vert.glsl", "assets/frag.glsl");
 	glUseProgram(program.id);

@@ -101,7 +101,7 @@ void camera_inputs(Camera *camera, GLFWwindow *window) {
 
         double mouseX;
         double mouseY;
-        glfwGetCursorPos(window, &mouseX, &mouseY);
+        glfwGetCursorPos(window, &mouseX, &mouseY); 
 
 		float rotX = 20.0 * (float)(mouseY - (800 / 2)) / 800;
 		float rotY = 20.0 * (float)(mouseX - (800 / 2)) / 800;
@@ -121,7 +121,13 @@ void camera_inputs(Camera *camera, GLFWwindow *window) {
 		// {
 		// 	Orientation = newOrientation;
 		// }
-        
+
+        // if () {
+            
+        // }
+        // orientation[0] = temp_orientation[0];
+        // orientation[1] = temp_orientation[1];
+        // orientation[2] = temp_orientation[2];
 
 		// Orientation = glm::rotate(Orientation, glm::radians(-rotY), Up);
         glm_vec3_rotate(orientation, glm_rad(-rotY), up);
@@ -130,9 +136,7 @@ void camera_inputs(Camera *camera, GLFWwindow *window) {
         camera->orientation->y = orientation[1];
         camera->orientation->z = orientation[2];
 
-        // if (camera->first_click) {
 		glfwSetCursorPos(window, (800 / 2), (800 / 2));
-        // }
 	}
 }
 
