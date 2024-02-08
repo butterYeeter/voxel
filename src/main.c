@@ -11,6 +11,7 @@
 #include "../include/uniforms.h"
 #include "../include/camera.h"
 #include "../include/block.h"
+#include "../include/chunk.h"
 
 int window_width = 800;
 int window_height = 800;
@@ -36,7 +37,11 @@ int main() {
 	glfwSetWindowSizeCallback(window, window_resize_callback);
 	glEnable(GL_DEPTH_TEST);
 
-	Block block = block_new(0.0, 0.0, 0.0);
+	// Block block = block_new(0.0, 0.0, 0.0);
+	Chunk chunk = chunk_new();
+	chunk_add_block(&chunk, block_new(0.0, 0.0, 0.0));
+	chunk_add_block(&chunk, block_new(1.0, 0.0, 0.0));
+	chunk_build_mesh(&chunk);
 
 	ShaderProgram program = shader_program_new("assets/vert.glsl", "assets/frag.glsl");
 	glUseProgram(program.id);
@@ -46,7 +51,7 @@ int main() {
 	glBindVertexArray(vao);
 	glGenBuffers(1, &vbo);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
-	glBufferData(GL_ARRAY_BUFFER, block.num_vertices, block.vertices, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, chunk.blocks[0].num_vertices * chunk.num_blocks, chunk.mesh, GL_STATIC_DRAW);
 
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6*sizeof(float), (void*)0);
 	glEnableVertexAttribArray(0);
@@ -74,7 +79,7 @@ int main() {
 		uniform_update(&rota, camera.view);
 
 		float time = glfwGetTime();
-		glDrawArrays(GL_TRIANGLES, 0, 12*3);
+		glDrawArrays(GL_TRIANGLES, 0, 12*3 * chunk.num_blocks);
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();
