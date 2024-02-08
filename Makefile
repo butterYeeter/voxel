@@ -4,8 +4,8 @@ build/main: build/camera.o build/shaders.o build/uniforms.o src/main.c
 # build/main.o: src/main.c
 # 	gcc -g -c $< -o $@
 
-# build/shaders.o: src/shaders.c
-	# gcc -g -c $< -o $@
+build/shaders.o: src/shaders.c
+	gcc -g -c $< -o $@
 
 build/uniforms.o: src/uniforms.c
 	gcc -g -c $< -o $@
