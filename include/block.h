@@ -6,6 +6,7 @@
 
 typedef struct {
     float *vertices;
+    size_t num_vertices;
 } Block;
 
 Block block_new(float x, float y, float z);

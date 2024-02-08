@@ -35,8 +35,8 @@ int main() {
 	}
 	glfwSetWindowSizeCallback(window, window_resize_callback);
 	glEnable(GL_DEPTH_TEST);
-	
-	Block block = block_new(0.0, 10.0, 0.0);
+
+	Block block = block_new(0.0, 0.0, 0.0);
 
 	ShaderProgram program = shader_program_new("assets/vert.glsl", "assets/frag.glsl");
 	glUseProgram(program.id);
@@ -46,7 +46,7 @@ int main() {
 	glBindVertexArray(vao);
 	glGenBuffers(1, &vbo);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), block.vertices, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, block.num_vertices, block.vertices, GL_STATIC_DRAW);
 
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6*sizeof(float), (void*)0);
 	glEnableVertexAttribArray(0);
