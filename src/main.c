@@ -39,8 +39,11 @@ int main() {
 
 	// Block block = block_new(0.0, 0.0, 0.0);
 	Chunk chunk = chunk_new();
-	chunk_add_block(&chunk, block_new(0.0, 0.0, 0.0));
-	chunk_add_block(&chunk, block_new(1.0, 0.0, 0.0));
+	for (int x = 0; x < 640; x++) {
+		for (int z = 0; z < 640; z++) {
+			chunk_add_block(&chunk, block_new(x, sinf(x)+sinf(0.5 * z)+sinf(0.3 * x)+cosf(0.3 * x), z));
+		}
+	}
 	chunk_build_mesh(&chunk);
 
 	ShaderProgram program = shader_program_new("assets/vert.glsl", "assets/frag.glsl");

@@ -24,7 +24,7 @@ Camera camera_new() {
         .position = vec3_new(0.0, 0.0, 0.0),
         .orientation = vec3_new(0.0, 0.0, -1.0),
         .up = vec3_new(0.0, 1.0, 0.0),
-        .speed = 0.1f,
+        .speed = 0.7f,
         .toggled = true,
     };
 }

@@ -17,9 +17,12 @@ void chunk_add_block(Chunk *chunk, Block block) {
 }
 
 void chunk_build_mesh(Chunk *chunk) {   
-    chunk->mesh = realloc(chunk->mesh, sizeof(float) * (36 * 6) * chunk->num_blocks);
+    chunk->mesh = (float *)realloc(chunk->mesh, sizeof(float) * (36 * 6) * chunk->num_blocks);
     
+    //build chunk
     for (size_t i = 0; i < chunk->num_blocks; i++) {
         memcpy(chunk->mesh + (36 * 6) * i, chunk->blocks[i].vertices, sizeof(float) * (36 * 6));
     }
+
+    //cull chunk
 }
