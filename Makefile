@@ -1,5 +1,5 @@
 build/main: build/chunk.o build/block.o build/camera.o build/shaders.o build/uniforms.o src/main.c
-	gcc -O3 -g -o $@ $? -lglad -lglfw -lm
+	gcc -O3 -g -o $@ $? -lm -lglad -lglfw
 
 # build/main.o: src/main.c
 # 	gcc -g -c $< -o $@
