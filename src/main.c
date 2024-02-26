@@ -52,14 +52,16 @@ int main() {
 	unsigned int vao, vbo, ebo;
 	glGenVertexArrays(1, &vao);
 	glBindVertexArray(vao);
-	glGenBuffers(1, &vbo);
-	glBindBuffer(GL_ARRAY_BUFFER, vbo);
-	glBufferData(GL_ARRAY_BUFFER, chunk.blocks[0].num_vertices * chunk.num_blocks, chunk.mesh, GL_STATIC_DRAW);
+	// glGenBuffers(1, &vbo);
+	// glBindBuffer(GL_ARRAY_BUFFER, vbo);
+	// glBufferData(GL_ARRAY_BUFFER, chunk.blocks[0].num_vertices * chunk.num_blocks, chunk.mesh, GL_STATIC_DRAW);
+	chunk_upload_mesh(&chunk);
 
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6*sizeof(float), (void*)0);
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6*sizeof(float), (void*)(3*sizeof(float)));
 	glEnableVertexAttribArray(1);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 	Uniform rota = uniform_new(&program, "rot", MAT4);
 
@@ -69,11 +71,15 @@ int main() {
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
 
 	Camera camera = camera_new();
+	float index = 0.0f;
+
 
 	while(!glfwWindowShouldClose(window)) {
-		if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
+		if ((glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) || (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS)) {
 			exit(1);
 		}
+
+
 
 		glClearColor(0.0f, 0.0f, 0.1f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -82,7 +88,13 @@ int main() {
 		uniform_update(&rota, camera.view);
 
 		float time = glfwGetTime();
-		glDrawArrays(GL_TRIANGLES, 0, 12*3 * chunk.num_blocks);
+		// glDrawArrays(GL_TRIANGLES, 0, 12*3 * chunk.num_blocks);
+		if(glfwGetKey(window, GLFW_KEY_N) == GLFW_PRESS) {
+			chunk_add_block(&chunk, block_new(index + 2.0f, 0.0f, 0.0f));
+			chunk_build_mesh(&chunk);
+			index += 1.0f;
+		}
+		chunk_render(&chunk, vao);	
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();
